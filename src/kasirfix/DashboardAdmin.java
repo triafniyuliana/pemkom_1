@@ -9,6 +9,7 @@
 
 package kasirfix;
 
+import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
@@ -21,23 +22,43 @@ public class DashboardAdmin extends javax.swing.JFrame {
     private PreparedStatement stat;
     private ResultSet rs;
     Koneksi k = new Koneksi();
+    public String nama_lengkap;
+//    if (up == null)
     public DashboardAdmin() {
         initComponents();
         k.connect();
     }
-    
+    class user {
+            String nama_lengkap;
+            
+            public user (String nama_lengkap){
+                this.nama_lengkap = nama_lengkap;
+            }
+        }
     public DashboardAdmin(UserProfile up) {
         this.up = up;
         initComponents();
         k.connect();
         getProfile(up); 
-        if (up.getNama_lengkap() == null || up.getNama_lengkap().isEmpty()) {
+        
+//        
+        user u = null;
+//        
+        if (up != null){
+            if (up.getNama_lengkap() == null || up.getNama_lengkap().isEmpty()) {
             TxtNamaUser.setText("Pengguna tidak ditemukan");
-        } else {
-            TxtNamaUser.setText(up.getNama_lengkap());
-        }      
+            } else {
+                TxtNamaUser.setText(up.getNama_lengkap());
+                nama_lengkap = up.getNama_lengkap();
+                u = new user(nama_lengkap);
+            } 
+        }else {
+            TxtNamaUser.setText(u.nama_lengkap);
+        }
+        
+             
     } 
-    private void getProfile(UserProfile up) {
+    public void getProfile(UserProfile up) {
         try {
             this.stat = k.getCon().prepareStatement("SELECT * FROM profil WHERE id_akun=?;");
             if (up != null) {
@@ -78,6 +99,7 @@ public class DashboardAdmin extends javax.swing.JFrame {
         TxtNamaUser = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        tampilUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin");
@@ -143,15 +165,28 @@ public class DashboardAdmin extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        tampilUser.setText("users");
+        tampilUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tampilUserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 775, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(112, 112, 112)
+                .addComponent(tampilUser)
+                .addContainerGap(591, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(tampilUser)
+                .addContainerGap(322, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -173,6 +208,13 @@ public class DashboardAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         Logout();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tampilUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilUserActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        ListUser lu = new ListUser(up);
+        lu.setVisible(true);
+    }//GEN-LAST:event_tampilUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,6 +257,7 @@ public class DashboardAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton tampilUser;
     // End of variables declaration//GEN-END:variables
 
     private void Logout() {
@@ -232,4 +275,5 @@ public class DashboardAdmin extends javax.swing.JFrame {
             System.out.println("Dialog ditutup");
         }
     }
+
 }

@@ -54,7 +54,9 @@ public class Login extends javax.swing.JFrame {
             int id_akun = 0;
             while (rs.next()) {
                 up.setId_akun(rs.getInt("id_akun"));
-                up.setRole(rs.getString("role"));
+                up.setUsername(rs.getString("username"));
+                up.setPassword(rs.getString("Password"));
+                up.setRole(rs.getString("role"));                
                 id_akun = rs.getInt("id_akun");
                 System.out.println(up.getId_akun());
                 

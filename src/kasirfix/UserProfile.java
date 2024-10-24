@@ -12,6 +12,7 @@ public class UserProfile {
     int id_akun;
     int id_profil;
     String username;
+    String Password;
     String nama_lengkap;
     String alamat;
     String no_hp;
@@ -39,6 +40,13 @@ public class UserProfile {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
 
     public String getNama_lengkap() {
